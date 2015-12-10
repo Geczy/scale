@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html lang="en" manifest="offline.appcache">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -18,7 +18,7 @@
       -webkit-user-select: none;
       font-family: -apple-system;
     }
-    
+
     #forcearea {
       position: fixed;
       top: 0;
@@ -30,7 +30,7 @@
       text-align: center;
       font-size: 24px;
     }
-    
+
     #tareCon {
       position: fixed;
       top: 10px;
@@ -39,7 +39,7 @@
       display: none;
       text-align: center;
     }
-    
+
     #tareValBox {
       width: 75%;
     }
@@ -48,19 +48,19 @@
 
 <body>
   <div id="forcearea">
-    0 grams
+    0.00 grams
   </div>
   <div id="tareCon">
     <strong>Tare:</strong>
     <br>
-    <input id="tareValBox" type="range" value="0" min="0" max="385" oninput="updateTextInput(this.value);">
+    <input id="tareValBox" type="range" step="0.01" value="0.00" min="0.00" max="385.00" oninput="updateTextInput(this.value);">
     <br>
-    <span id="textInput">0 grams</span>
+    <span id="textInput">0.00 grams</span>
   </div>
   <script>
     // based on https://github.com/freinbichler/3d-touch
     var element = document.getElementById('forcearea');
-    var tareVal = 0;
+    var tareVal = 0.00;
 
     function onTouchStartMove(e) {
       e.preventDefault();
@@ -83,20 +83,20 @@
     }
 
     function refreshMacForceValue(forceValue) {
-      element.innerHTML = Math.round(forceValue * 1000) + " <br><sup style=\"color:red\">Uncalibrated for Mac</sup>";
+      element.innerHTML = Math.round(forceValue * 1000, 2) + " <br><sup style=\"color:red\">Uncalibrated for Mac</sup>";
     }
 
     function refreshForceValue() {
       var touchEvent = this;
-      var forceValue = 0;
+      var forceValue = 0.00;
       if (touchEvent) {
-        forceValue = touchEvent.force || 0;
+        forceValue = touchEvent.force || 0.00;
         setTimeout(refreshForceValue.bind(touch), 10);
       } else {
-        forceValue = 0;
+        forceValue = 0.00;
       }
       document.getElementById("tareCon").style.display = "block";
-      element.innerHTML = (Math.round(forceValue * 385) - tareVal) + " grams";
+      element.innerHTML = (Math.round(forceValue * 385, 2) - tareVal) + " grams";
     }
 
     function updateTextInput(val) {
